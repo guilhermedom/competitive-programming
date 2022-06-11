@@ -2,23 +2,25 @@
 
 using namespace std;
 
-int bestTimeToBuyAndSellStock_bottomup(int k, vector<int> prices) {
-	vector<int> dp(prices.size());
+int bestTimeToBuyAndSellStock_bottomup(int k, int *prices, int n) {
+	if (n <= 1) {
+		return 0;
+	}
 
-	int min = prices[0];
-	int max = 0;
-	for (int i = 1; i < (int) prices.size(); i++) {
-		if (max < prices[i]) {
-			max = prices[i];
-		} else {
-			dp.push_back(i - 1);
-			min = prices[i];
-			max = 0;
+	int dp[k + 1][n + 1];
+
+	memset(dp, 0, sizeof(dp));
+
+	for (int i = 1; i <= k; i++) {
+		for (int j = 1; j < n; j++) {
+			dp[i][j] = dp[i][j - 1];
+			for (int k = 0; k < j; k++) {
+				dp[i][j] = max(dp[i][j], prices[j] - prices[k] + dp[i - 1][k]);
+			}
 		}
 	}
 
-	cout << dp.size();
-	return 1;
+	return dp[k][n - 1];
 }
 
 void solve() {
@@ -26,15 +28,14 @@ void solve() {
 
 	cin >> k;
 	cin >> n;
-	vector<int> prices(n);
+
+	int prices[n];
 
 	for (int i = 0; i < n; i++) {
 		cin >> prices[i];
 	}
 
-	bestTimeToBuyAndSellStock_bottomup(k, prices);
-	// vector<vector<int>> dp(m, vector<int>(n, 0));
-	// cout << collectingCoins_topdown(matrix, m - 1, n - 1, dp);
+	cout << bestTimeToBuyAndSellStock_bottomup(k, prices, n);
 }
 
 int main() {
