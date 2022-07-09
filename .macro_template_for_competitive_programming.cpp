@@ -1,3 +1,7 @@
+/*
+	ONLY USE THESE DEFINES AND HACKS IN COMPETITIVE PROGRAMMING CODE.
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;
